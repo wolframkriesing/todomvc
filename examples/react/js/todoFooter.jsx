@@ -9,7 +9,7 @@ var app = app || {};
 	'use strict';
 
 	app.TodoFooter = React.createClass({
-		
+
 		render: function () {
 			if (this.props.count || this.props.completedCount) {
 				return this._renderFooterContent();
