@@ -9,7 +9,19 @@ var app = app || {};
 	'use strict';
 
 	app.TodoFooter = React.createClass({
+		
 		render: function () {
+			if (this.props.count || this.props.completedCount) {
+				return this._renderFooterContent();
+			}
+			return this._renderEmptyFooter();
+		},
+
+		_renderEmptyFooter: function() {
+			return (<footer></footer>);
+		},
+
+		_renderFooterContent: function() {
 			var activeTodoWord = app.Utils.pluralize(this.props.count, 'item');
 			var clearButton = null;
 
@@ -36,27 +48,27 @@ var app = app || {};
 							<a
 								href="#/"
 								className={cx({selected: nowShowing === app.ALL_TODOS})}>
-									All
+								All
 							</a>
 						</li>
-						{' '}
+							{' '}
 						<li>
 							<a
 								href="#/active"
 								className={cx({selected: nowShowing === app.ACTIVE_TODOS})}>
-									Active
+								Active
 							</a>
 						</li>
-						{' '}
+							{' '}
 						<li>
 							<a
 								href="#/completed"
 								className={cx({selected: nowShowing === app.COMPLETED_TODOS})}>
-									Completed
+								Completed
 							</a>
 						</li>
 					</ul>
-					{clearButton}
+						{clearButton}
 				</footer>
 			);
 		}

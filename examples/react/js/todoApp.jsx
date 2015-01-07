@@ -84,7 +84,6 @@ var app = app || {};
 		},
 
 		render: function () {
-			var footer;
 			var main;
 			var todos = this.props.model.todos;
 
@@ -120,16 +119,6 @@ var app = app || {};
 
 			var completedCount = todos.length - activeTodoCount;
 
-			if (activeTodoCount || completedCount) {
-				footer =
-					<TodoFooter
-						count={activeTodoCount}
-						completedCount={completedCount}
-						nowShowing={this.state.nowShowing}
-						onClearCompleted={this.clearCompleted}
-					/>;
-			}
-
 			if (todos.length) {
 				main = (
 					<section id="main">
@@ -159,7 +148,12 @@ var app = app || {};
 						/>
 					</header>
 					{main}
-					{footer}
+					<TodoFooter
+						count={activeTodoCount}
+						completedCount={completedCount}
+						nowShowing={this.state.nowShowing}
+						onClearCompleted={this.clearCompleted}
+					/>
 				</div>
 			);
 		}
