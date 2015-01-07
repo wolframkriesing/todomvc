@@ -16,7 +16,7 @@ var app = app || {};
 
 	var ENTER_KEY = 13;
 
-	var TodoApp = React.createClass({
+	app.TodoApp = React.createClass({
 		getInitialState: function () {
 			return {
 				nowShowing: app.ALL_TODOS,
@@ -164,16 +164,4 @@ var app = app || {};
 			);
 		}
 	});
-
-	var model = new app.TodoModel('react-todos');
-
-	function render() {
-		React.render(
-			<TodoApp model={model}/>,
-			document.getElementById('todoapp')
-		);
-	}
-
-	model.subscribe(render);
-	render();
 })();
