@@ -120,31 +120,31 @@ var app = app || {};
 
 			var completedCount = todos.length - activeTodoCount;
 
-			//if (activeTodoCount || completedCount) {
-			//	footer =
-			//		<TodoFooter
-			//			count={activeTodoCount}
-			//			completedCount={completedCount}
-			//			nowShowing={this.state.nowShowing}
-			//			onClearCompleted={this.clearCompleted}
-			//		/>;
-			//}
-      //
-			//if (todos.length) {
-			//	main = (
-			//		<section id="main">
-			//			<input
-			//				id="toggle-all"
-			//				type="checkbox"
-			//				onChange={this.toggleAll}
-			//				checked={activeTodoCount === 0}
-			//			/>
-			//			<ul id="todo-list">
-			//				{todoItems}
-			//			</ul>
-			//		</section>
-			//	);
-			//}
+			if (activeTodoCount || completedCount) {
+				footer =
+					<TodoFooter
+						count={activeTodoCount}
+						completedCount={completedCount}
+						nowShowing={this.state.nowShowing}
+						onClearCompleted={this.clearCompleted}
+					/>;
+			}
+
+			if (todos.length) {
+				main = (
+					<section id="main">
+						<input
+							id="toggle-all"
+							type="checkbox"
+							onChange={this.toggleAll}
+							checked={activeTodoCount === 0}
+						/>
+						<ul id="todo-list">
+							{todoItems}
+						</ul>
+					</section>
+				);
+			}
 
 			return (
 				<div>
@@ -158,25 +158,8 @@ var app = app || {};
 							autoFocus={true}
 						/>
 					</header>
-
-					<section id="main">
-						<input
-							id="toggle-all"
-							type="checkbox"
-							onChange={this.toggleAll}
-							checked={activeTodoCount === 0}
-						/>
-						<ul id="todo-list">
-							{todoItems}
-						</ul>
-					</section>
-
-					<TodoFooter
-						count={activeTodoCount}
-						completedCount={completedCount}
-						nowShowing={this.state.nowShowing}
-						onClearCompleted={this.clearCompleted}
-					/>
+					{main}
+					{footer}
 				</div>
 			);
 		}

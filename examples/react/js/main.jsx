@@ -10,10 +10,9 @@ var app = app || {};
 
 	var model = new app.TodoModel('react-todos');
 
-	var TodoApp = app.TodoApp;
 	function render() {
 		React.render(
-			<TodoApp model={model}/>,
+			<app.TodoApp model={model}/>,
 			document.getElementById('todoapp')
 		);
 	}
