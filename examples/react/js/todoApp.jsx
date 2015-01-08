@@ -37,7 +37,8 @@ var app = app || {};
 		},
 
 		render: function () {
-			var model = this.props.model;
+			var props = this.props;
+      var model = props.model;
       var todos = model.todos;
 
 			var activeTodoCount = todos.reduce(function (accum, todo) {
@@ -69,7 +70,7 @@ var app = app || {};
 						count={activeTodoCount}
 						completedCount={completedCount}
 						nowShowing={this.state.nowShowing}
-						onClearCompleted={model.clearCompleted.bind(model)}
+						onClearCompleted={props.clearCompleted}
 					/>
 				</div>
 			);

@@ -14,6 +14,7 @@ var app = app || {};
 		var todoApp = React.render(
 			<app.TodoApp
 				model={model}
+				clearCompleted={model.clearCompleted.bind(model)}
 			/>,
 			document.getElementById('todoapp')
 		);
