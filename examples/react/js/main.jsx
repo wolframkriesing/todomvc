@@ -8,20 +8,8 @@ var app = app || {};
 (function () {
 	'use strict';
 
-	var model = new app.TodoModel('react-todos');
-
-	function render() {
-		var todoApp = React.render(
-			<app.TodoApp
-				model={model}
-				clearCompleted={model.clearCompleted.bind(model)}
-			/>,
-			document.getElementById('todoapp')
-		);
-		startRouter(todoApp);
-	}
-
-	function startRouter(todoApp) {
+	var todoApp;
+	function startRouter() {
 		var router = new Router({
 			'/': todoApp.setState.bind(todoApp, {nowShowing: app.ALL_TODOS}),
 			'/active': todoApp.setState.bind(todoApp, {nowShowing: app.ACTIVE_TODOS}),
@@ -30,6 +18,18 @@ var app = app || {};
 		router.init('/');
 	}
 
-	model.subscribe(render);
-	render();
+	function update() {
+		todoApp.setProps({model: model});
+	}
+
+	var model = new app.TodoModel('react-todos');
+	model.subscribe(update);
+	todoApp = React.render(
+		<app.TodoApp
+			model={model}
+			clearCompleted={model.clearCompleted.bind(model)}
+		/>,
+		document.getElementById('todoapp')
+	);
+	startRouter(todoApp);
 })();
