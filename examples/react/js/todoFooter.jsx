@@ -30,24 +30,18 @@ var app = app || {};
 					<span id="todo-count">
 						<strong>{count}</strong> {activeTodoWord} left
 					</span>
+					
 					<app.TodoFilters
 						filters={this.props.filters}
 					/>
-					{this._renderClearButton(completedCount)}
+
+					<app.TodoClearButton
+						completedCount={completedCount}
+						onClearCompleted={this.props.onClearCompleted}
+					/>
 				</footer>
 			);
-		},
 
-		_renderClearButton: function(completedCount) {
-			if (completedCount > 0) {
-				return (
-					<button
-						id="clear-completed"
-						onClick={this.props.onClearCompleted}>
-						Clear completed ({completedCount})
-					</button>
-				);
-			}
 		}
 	});
 })();
