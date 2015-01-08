@@ -11,34 +11,60 @@ var app = app || {};
 	var todoApp;
 	function startRouter() {
 		var router = new Router({
-			'/': showAllItems,
-			'/active': showActiveItems,
-			'/completed': showCompletedItems
+			'/': showAllClicked,
+			'/active': showActiveClicked,
+			'/completed': showCompletedClicked
 		});
 		router.init('/');
 	}
 
-	function getAllTodos() {
-		return model.todos;
-	}
-	function getActiveTodos() {
-		return model.todos.filter(function(todo) { return !todo.completed });
-	}
-	function getCompletedTodos() {
-		return model.todos.filter(function(todo) { return todo.completed });
+	function getDefaultFilters() {
+		return [
+			{url: '#/', linkText: 'All', selected: false},
+			{url: '#/active', linkText: 'Active', selected: false},
+			{url: '#/completed', linkText: 'Completed', selected: false}
+		];
 	}
 
-	function showAllItems() {
-		todoApp.setState({nowShowing: app.ALL_TODOS});
-		todoApp.setProps({todos: getAllTodos()});
+	function getAllFilter() {
+		var filters = getDefaultFilters();
+		filters[0].selected = true;
+		return filters;
 	}
-	function showActiveItems() {
-		todoApp.setState({nowShowing: app.ACTIVE_TODOS});
-		todoApp.setProps({todos: getActiveTodos()});
+	function getActiveFilter() {
+		var filters = getDefaultFilters();
+		filters[1].selected = true;
+		return filters;
 	}
-	function showCompletedItems() {
-		todoApp.setState({nowShowing: app.COMPLETED_TODOS});
-		todoApp.setProps({todos: getCompletedTodos()});
+	function getCompletedFilter() {
+		var filters = getDefaultFilters();
+		filters[2].selected = true;
+		return filters;
+	}
+
+	function filterForActiveTodos(todos) {
+		return todos.filter(function(todo) { return !todo.completed });
+	}
+	function filterForCompletedTodos(todos) {
+		return todos.filter(function(todo) { return todo.completed });
+	}
+
+	function showAllClicked() {
+		updateViewWithTodos(model.todos, getAllFilter());
+	}
+	function showActiveClicked() {
+		updateViewWithTodos(filterForActiveTodos(model.todos), getActiveFilter());
+	}
+	function showCompletedClicked() {
+		updateViewWithTodos(filterForCompletedTodos(model.todos), getCompletedFilter());
+	}
+
+	function updateViewWithTodos(todos, filters) {
+		todoApp.setProps({
+			model: model,
+			todos: todos,
+			filters: filters
+		});
 	}
 
 	function update() {
@@ -51,6 +77,7 @@ var app = app || {};
 		<app.TodoApp
 			model={model}
 			todos={model.todos}
+			filters={getAllFilter()}
 			clearCompleted={model.clearCompleted.bind(model)}
 		/>,
 		document.getElementById('todoapp')

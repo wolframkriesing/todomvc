@@ -8,10 +8,6 @@ var app = app || {};
 (function () {
 	'use strict';
 
-	app.ALL_TODOS = 'all';
-	app.ACTIVE_TODOS = 'active';
-	app.COMPLETED_TODOS = 'completed';
-
 	var ENTER_KEY = 13;
 
 	app.TodoApp = React.createClass({
@@ -47,13 +43,6 @@ var app = app || {};
 
 			var completedCount = todos.length - activeTodoCount;
 
-			var nowShowing = this.state.nowShowing;
-			var filters = [
-				{url: '#/', linkText: 'All', selected: nowShowing === app.ALL_TODOS},
-				{url: '#/active', linkText: 'Active', selected: nowShowing === app.ACTIVE_TODOS},
-				{url: '#/completed', linkText: 'Completed', selected: nowShowing === app.COMPLETED_TODOS}
-			];
-
 			return (
 				<div>
 					<header id="header">
@@ -76,7 +65,7 @@ var app = app || {};
 					<app.TodoFooter
 						count={activeTodoCount}
 						completedCount={completedCount}
-						filters={filters}
+						filters={this.props.filters}
 						onClearCompleted={props.clearCompleted}
 					/>
 				</div>
