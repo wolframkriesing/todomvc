@@ -8,6 +8,8 @@ var app = app || {};
 (function () {
 	'use strict';
 
+	var filter = new app.Filter();
+
 	var todoApp;
 	function startRouter() {
 		var router = new Router({
@@ -18,57 +20,36 @@ var app = app || {};
 		router.init('/');
 	}
 
-	function getDefaultFilters() {
-		return [
-			{url: '#/', linkText: 'All', selected: false},
-			{url: '#/active', linkText: 'Active', selected: false},
-			{url: '#/completed', linkText: 'Completed', selected: false}
-		];
-	}
-
-	function getAllFilter() {
-		var filters = getDefaultFilters();
-		filters[0].selected = true;
-		return filters;
-	}
-	function getActiveFilter() {
-		var filters = getDefaultFilters();
-		filters[1].selected = true;
-		return filters;
-	}
-	function getCompletedFilter() {
-		var filters = getDefaultFilters();
-		filters[2].selected = true;
-		return filters;
-	}
-
-	function filterForActiveTodos(todos) {
-		return todos.filter(function(todo) { return !todo.completed });
-	}
-	function filterForCompletedTodos(todos) {
-		return todos.filter(function(todo) { return todo.completed });
-	}
-
 	function showAllClicked() {
-		updateViewWithTodos(model.todos, getAllFilter());
+		filter.setCurrent(0);
+		update();
 	}
 	function showActiveClicked() {
-		updateViewWithTodos(filterForActiveTodos(model.todos), getActiveFilter());
+		filter.setCurrent(1);
+		update();
 	}
 	function showCompletedClicked() {
-		updateViewWithTodos(filterForCompletedTodos(model.todos), getCompletedFilter());
+		filter.setCurrent(2);
+		update();
 	}
 
-	function updateViewWithTodos(todos, filters) {
-		todoApp.setProps({
-			model: model,
-			todos: todos,
-			filters: filters
-		});
+	function _getTodoStats(todos) {
+		var activeCount = todos.reduce(function(accum, todo) {
+      return todo.completed ? accum : accum + 1;
+    }, 0);
+		return {
+			activeCount: activeCount,
+			completedCount: todos.length - activeCount
+		};
 	}
 
 	function update() {
-		todoApp.setProps({model: model, todos: model.todos});
+		todoApp.setProps({
+			model: model,
+			todos: filter.applyOn(model.todos),
+			filters: filter.getViewValues(),
+			stats: _getTodoStats(model.todos)
+		})
 	}
 
 	var model = new app.TodoModel('react-todos');
@@ -77,7 +58,8 @@ var app = app || {};
 		<app.TodoApp
 			model={model}
 			todos={model.todos}
-			filters={getAllFilter()}
+			filters={filter.getViewValues()}
+			stats={_getTodoStats(model.todos)}
 			clearCompleted={model.clearCompleted.bind(model)}
 		/>,
 		document.getElementById('todoapp')
