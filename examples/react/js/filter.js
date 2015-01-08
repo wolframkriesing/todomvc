@@ -9,12 +9,8 @@ var app = app || {};
   'use strict';
 
   class Filter {
-    constructor() {
-      this._by = [
-        {url: '#/', linkText: 'All'},
-        {url: '#/active', linkText: 'Active', criteria: function(todo) { return !todo.completed }},
-        {url: '#/completed', linkText: 'Completed', criteria: function(todo) { return todo.completed }}
-      ];
+    constructor(filters) {
+      this._by = filters;
       this._current = 0;
     }
 
@@ -33,7 +29,7 @@ var app = app || {};
     getViewValues() {
       var currentIndex = this._current;
       return this._by.map(function(by, idx) {
-        return {url: by.url, linkText: by.linkText, selected: idx === currentIndex};
+        return {url: '#' + by.url, linkText: by.linkText, selected: idx === currentIndex};
       });
     }
   }

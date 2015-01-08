@@ -8,29 +8,25 @@ var app = app || {};
 (function () {
 	'use strict';
 
-	var filter = new app.Filter();
+	var filterData = [
+		{url: '/', linkText: 'All'},
+		{url: '/active', linkText: 'Active', criteria: function(todo) { return !todo.completed }},
+		{url: '/completed', linkText: 'Completed', criteria: function(todo) { return todo.completed }}
+  ];
+  var filter = new app.Filter(filterData);
 
-	var todoApp;
 	function startRouter() {
-		var router = new Router({
-			'/': showAllClicked,
-			'/active': showActiveClicked,
-			'/completed': showCompletedClicked
+		var routerData = {};
+		filterData.forEach(function(f, idx) {
+			routerData[f.url] = updateViewFilteredBy.bind(null, idx);
 		});
-		router.init('/');
+		var router = new Router(routerData);
+		router.init(filterData[0].url);
 	}
 
-	function showAllClicked() {
-		filter.setCurrent(0);
-		update();
-	}
-	function showActiveClicked() {
-		filter.setCurrent(1);
-		update();
-	}
-	function showCompletedClicked() {
-		filter.setCurrent(2);
-		update();
+	function updateViewFilteredBy(index) {
+		filter.setCurrent(index);
+		updateView();
 	}
 
 	function _getTodoStats(todos) {
@@ -43,7 +39,8 @@ var app = app || {};
 		};
 	}
 
-	function update() {
+	var todoApp;
+	function updateView() {
 		todoApp.setProps({
 			model: model,
 			todos: filter.applyOn(model.todos),
@@ -53,7 +50,7 @@ var app = app || {};
 	}
 
 	var model = new app.TodoModel('react-todos');
-	model.subscribe(update);
+	model.subscribe(updateView);
 	todoApp = React.render(
 		<app.TodoApp
 			model={model}
