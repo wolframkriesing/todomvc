@@ -29,7 +29,7 @@ var app = app || {};
 		updateView();
 	}
 
-	function _getTodoStats(todos) {
+	function getStats(todos) {
 		var activeCount = todos.filter(function(todo) { return !todo.completed}).length;
 		return {
 			activeCount: activeCount,
@@ -43,7 +43,7 @@ var app = app || {};
 			model: model,
 			todos: filter.applyOn(model.todos),
 			filters: filter.getViewValues(),
-			stats: _getTodoStats(model.todos)
+			stats: getStats(model.todos)
 		})
 	}
 
@@ -54,10 +54,10 @@ var app = app || {};
 			model={model}
 			todos={model.todos}
 			filters={filter.getViewValues()}
-			stats={_getTodoStats(model.todos)}
+			stats={getStats(model.todos)}
 			clearCompleted={model.clearCompleted.bind(model)}
 		/>,
 		document.getElementById('todoapp')
 	);
-	startRouter(todoApp);
+	startRouter();
 })();
