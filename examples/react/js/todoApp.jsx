@@ -47,6 +47,13 @@ var app = app || {};
 
 			var completedCount = todos.length - activeTodoCount;
 
+			var nowShowing = this.state.nowShowing;
+			var filters = [
+				{url: '#/', linkText: 'All', selected: nowShowing === app.ALL_TODOS},
+				{url: '#/active', linkText: 'Active', selected: nowShowing === app.ACTIVE_TODOS},
+				{url: '#/completed', linkText: 'Completed', selected: nowShowing === app.COMPLETED_TODOS}
+			];
+
 			return (
 				<div>
 					<header id="header">
@@ -63,13 +70,13 @@ var app = app || {};
 					<app.TodoItems
 						model={model}
 						checked={activeTodoCount === 0}
-						nowShowing={this.state.nowShowing}
+						nowShowing={nowShowing}
 					/>
 
 					<app.TodoFooter
 						count={activeTodoCount}
 						completedCount={completedCount}
-						nowShowing={this.state.nowShowing}
+						filters={filters}
 						onClearCompleted={props.clearCompleted}
 					/>
 				</div>

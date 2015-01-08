@@ -11,24 +11,17 @@ var app = app || {};
 	app.TodoFilters = React.createClass({
 
 		render: function () {
-			// React idiom for shortcutting to `classSet` since it'll be used often
-			var cx = React.addons.classSet;
-			var nowShowing = this.props.nowShowing;
 			return (
-				<ul id="filters">
-					{this._renderFilterLine('#/', 'All', cx({selected: nowShowing === app.ALL_TODOS}))}
-					{' '}
-  				{this._renderFilterLine('#/active', 'Active', cx({selected: nowShowing === app.ACTIVE_TODOS}))}
-				  {' '}
-  				{this._renderFilterLine('#/completed', 'Completed', cx({selected: nowShowing === app.COMPLETED_TODOS}))}
-				</ul>
+				<ul id="filters">{this.props.filters.map(this._renderOne)}</ul>
 			);
 		},
 
-		_renderFilterLine: function(url, what, className) {
+		_renderOne: function(data) {
 			return (
 				<li>
-					<a href={url} className={className}>{what}</a>
+					<a href={data.url} className={data.selected ? 'selected' : ''}>
+						{data.linkText}
+					</a>
 				</li>
 			);
 		}

@@ -31,7 +31,7 @@ var app = app || {};
 						<strong>{count}</strong> {activeTodoWord} left
 					</span>
 					<app.TodoFilters
-						nowShowing={this.props.nowShowing}
+						filters={this.props.filters}
 					/>
 					{this._renderClearButton(completedCount)}
 				</footer>
