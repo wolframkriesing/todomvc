@@ -10,7 +10,7 @@ var app = app || {};
 
   class Filter {
     constructor(filters) {
-      this._by = filters;
+      this._filters = filters;
       this._current = 0;
     }
 
@@ -19,7 +19,7 @@ var app = app || {};
     }
 
     applyOn(todos) {
-      var criteria = this._by[this._current].criteria;
+      var criteria = this._filters[this._current].criteria;
       if (criteria) {
         return todos.filter(criteria);
       }
@@ -28,7 +28,7 @@ var app = app || {};
 
     getViewValues() {
       var currentIndex = this._current;
-      return this._by.map(function(by, idx) {
+      return this._filters.map(function(by, idx) {
         return {url: '#' + by.url, linkText: by.linkText, selected: idx === currentIndex};
       });
     }
