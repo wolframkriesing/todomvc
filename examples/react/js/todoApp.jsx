@@ -46,12 +46,9 @@ var app = app || {};
 			}
 		},
 
-		clearCompleted: function () {
-			this.props.model.clearCompleted();
-		},
-
 		render: function () {
-			var todos = this.props.model.todos;
+			var model = this.props.model;
+      var todos = model.todos;
 
 			var activeTodoCount = todos.reduce(function (accum, todo) {
 				return todo.completed ? accum : accum + 1;
@@ -73,7 +70,7 @@ var app = app || {};
 					</header>
 
 					<app.TodoItems
-						model={this.props.model}
+						model={model}
 						checked={activeTodoCount === 0}
 						nowShowing={this.state.nowShowing}
 					/>
@@ -82,7 +79,7 @@ var app = app || {};
 						count={activeTodoCount}
 						completedCount={completedCount}
 						nowShowing={this.state.nowShowing}
-						onClearCompleted={this.clearCompleted}
+						onClearCompleted={model.clearCompleted.bind(model)}
 					/>
 				</div>
 			);
