@@ -11,7 +11,6 @@ var app = app || {};
 	app.ALL_TODOS = 'all';
 	app.ACTIVE_TODOS = 'active';
 	app.COMPLETED_TODOS = 'completed';
-	var TodoItem = app.TodoItem;
 
 	app.TodoItems = React.createClass({
 
@@ -60,7 +59,7 @@ var app = app || {};
 
 			var todoItems = shownTodos.map(function (todo) {
 				return (
-					<TodoItem
+					<app.TodoItem
 						key={todo.id}
 						todo={todo}
 						onToggle={model.toggle.bind(model, todo)}

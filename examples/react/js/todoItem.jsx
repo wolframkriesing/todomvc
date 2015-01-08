@@ -12,7 +12,7 @@ var app = app || {};
 	var ENTER_KEY = 13;
 
 	app.TodoItem = React.createClass({
-		handleSubmit: function (event) {
+		handleSubmit: function () {
 			var val = this.state.editText.trim();
 			if (val) {
 				this.props.onSave(val);
