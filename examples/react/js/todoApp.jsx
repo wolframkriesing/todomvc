@@ -21,16 +21,6 @@ var app = app || {};
 			};
 		},
 
-		componentDidMount: function () {
-			var setState = this.setState;
-			var router = Router({
-				'/': setState.bind(this, {nowShowing: app.ALL_TODOS}),
-				'/active': setState.bind(this, {nowShowing: app.ACTIVE_TODOS}),
-				'/completed': setState.bind(this, {nowShowing: app.COMPLETED_TODOS})
-			});
-			router.init('/');
-		},
-
 		handleNewTodoKeyDown: function (event) {
 			if (event.which !== ENTER_KEY) {
 				return;
