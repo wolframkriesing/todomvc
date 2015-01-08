@@ -54,6 +54,18 @@ var app = app || {};
 				{url: '#/completed', linkText: 'Completed', selected: nowShowing === app.COMPLETED_TODOS}
 			];
 
+			var shownTodos = todos.filter(function (todo) {
+				switch (nowShowing) {
+					case app.ACTIVE_TODOS:
+						return !todo.completed;
+					case app.COMPLETED_TODOS:
+						return todo.completed;
+					default:
+						return true;
+				}
+			}, this);
+
+
 			return (
 				<div>
 					<header id="header">
@@ -69,6 +81,7 @@ var app = app || {};
 
 					<app.TodoItems
 						model={model}
+						todos={shownTodos}
 						checked={activeTodoCount === 0}
 						nowShowing={nowShowing}
 					/>

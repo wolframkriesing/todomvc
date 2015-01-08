@@ -8,10 +8,6 @@ var app = app || {};
 (function () {
 	'use strict';
 
-	app.ALL_TODOS = 'all';
-	app.ACTIVE_TODOS = 'active';
-	app.COMPLETED_TODOS = 'completed';
-
 	app.TodoItems = React.createClass({
 
 		getInitialState: function () {
@@ -42,36 +38,24 @@ var app = app || {};
 			this.setState({editing: null});
 		},
 
-		render: function () {
+		_renderItem: function(todo) {
 			var model = this.props.model;
-      var todos = model.todos;
+			return (
+				<app.TodoItem
+					key={todo.id}
+					todo={todo}
+					onToggle={model.toggle.bind(model, todo)}
+					onDestroy={model.destroy.bind(model, todo)}
+					onEdit={this.edit.bind(this, todo)}
+					editing={this.state.editing === todo.id}
+					onSave={this.save.bind(this, todo)}
+					onCancel={this.cancel}
+				/>
+			);
+		},
 
-			var shownTodos = todos.filter(function (todo) {
-				switch (this.props.nowShowing) {
-				case app.ACTIVE_TODOS:
-					return !todo.completed;
-				case app.COMPLETED_TODOS:
-					return todo.completed;
-				default:
-					return true;
-				}
-			}, this);
-
-			var todoItems = shownTodos.map(function (todo) {
-				return (
-					<app.TodoItem
-						key={todo.id}
-						todo={todo}
-						onToggle={model.toggle.bind(model, todo)}
-						onDestroy={model.destroy.bind(model, todo)}
-						onEdit={this.edit.bind(this, todo)}
-						editing={this.state.editing === todo.id}
-						onSave={this.save.bind(this, todo)}
-						onCancel={this.cancel}
-					/>
-				);
-			}, this);
-
+		render: function () {
+			var todos = this.props.todos;
 			return (
 				<section id="main">
 					<input
@@ -81,7 +65,7 @@ var app = app || {};
 						checked={this.props.checked}
 					/>
 					<ul id="todo-list">
-						{todoItems}
+						{todos.map(this._renderItem, this)}
 					</ul>
 				</section>
 			);
