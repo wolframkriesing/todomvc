@@ -30,9 +30,7 @@ var app = app || {};
 	}
 
 	function _getTodoStats(todos) {
-		var activeCount = todos.reduce(function(accum, todo) {
-      return todo.completed ? accum : accum + 1;
-    }, 0);
+		var activeCount = todos.filter(function(todo) { return !todo.completed}).length;
 		return {
 			activeCount: activeCount,
 			completedCount: todos.length - activeCount
