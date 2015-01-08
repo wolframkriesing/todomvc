@@ -12,14 +12,12 @@ var app = app || {};
 
 		render: function () {
       var props = this.props;
-      var completedCount = props.completedCount;
-
-			if (completedCount > 0) {
+			if (props.completedCount > 0) {
 				return (
 					<button
 						id="clear-completed"
 						onClick={props.onClearCompleted}>
-						Clear completed ({completedCount})
+						Clear completed ({props.completedCount})
 					</button>
 				);
 			}

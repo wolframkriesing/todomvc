@@ -11,32 +11,29 @@ var app = app || {};
 	app.TodoFooter = React.createClass({
 
 		render: function () {
-			var completedCount = this.props.completedCount;
-			var count = this.props.count;
-      if (count || completedCount) {
-				return this._renderFooterContent(count, completedCount);
+			if (this._anythingToShow()) {
+				return this._renderFooterContent();
 			}
 			return this._renderEmptyFooter();
+		},
+
+		_anythingToShow: function() {
+			return this.props.count || this.props.completedCount;
 		},
 
 		_renderEmptyFooter: function() {
 			return (<footer></footer>);
 		},
 
-		_renderFooterContent: function(count, completedCount) {
-			var activeTodoWord = app.Utils.pluralize(count, 'item');
+		_renderFooterContent: function() {
 			return (
 				<footer id="footer">
-					<span id="todo-count">
-						<strong>{count}</strong> {activeTodoWord} left
-					</span>
+					<app.TodoStats count={this.props.count} />
 					
-					<app.TodoFilters
-						filters={this.props.filters}
-					/>
+					<app.TodoFilters filters={this.props.filters} />
 
 					<app.TodoClearButton
-						completedCount={completedCount}
+						completedCount={this.props.completedCount}
 						onClearCompleted={this.props.onClearCompleted}
 					/>
 				</footer>
