@@ -11,8 +11,10 @@ var app = app || {};
 	app.TodoFooter = React.createClass({
 
 		render: function () {
-			if (this.props.count || this.props.completedCount) {
-				return this._renderFooterContent();
+			var completedCount = this.props.completedCount;
+			var count = this.props.count;
+      if (count || completedCount) {
+				return this._renderFooterContent(count, completedCount);
 			}
 			return this._renderEmptyFooter();
 		},
@@ -21,56 +23,31 @@ var app = app || {};
 			return (<footer></footer>);
 		},
 
-		_renderFooterContent: function() {
-			var activeTodoWord = app.Utils.pluralize(this.props.count, 'item');
-			var clearButton = null;
-
-			if (this.props.completedCount > 0) {
-				clearButton = (
-					<button
-						id="clear-completed"
-						onClick={this.props.onClearCompleted}>
-						Clear completed ({this.props.completedCount})
-					</button>
-				);
-			}
-
-			// React idiom for shortcutting to `classSet` since it'll be used often
-			var cx = React.addons.classSet;
-			var nowShowing = this.props.nowShowing;
+		_renderFooterContent: function(count, completedCount) {
+			var activeTodoWord = app.Utils.pluralize(count, 'item');
 			return (
 				<footer id="footer">
 					<span id="todo-count">
-						<strong>{this.props.count}</strong> {activeTodoWord} left
+						<strong>{count}</strong> {activeTodoWord} left
 					</span>
-					<ul id="filters">
-						<li>
-							<a
-								href="#/"
-								className={cx({selected: nowShowing === app.ALL_TODOS})}>
-								All
-							</a>
-						</li>
-							{' '}
-						<li>
-							<a
-								href="#/active"
-								className={cx({selected: nowShowing === app.ACTIVE_TODOS})}>
-								Active
-							</a>
-						</li>
-							{' '}
-						<li>
-							<a
-								href="#/completed"
-								className={cx({selected: nowShowing === app.COMPLETED_TODOS})}>
-								Completed
-							</a>
-						</li>
-					</ul>
-						{clearButton}
+					<app.TodoFilters
+						nowShowing={this.props.nowShowing}
+					/>
+					{this._renderClearButton(completedCount)}
 				</footer>
 			);
+		},
+
+		_renderClearButton: function(completedCount) {
+			if (completedCount > 0) {
+				return (
+					<button
+						id="clear-completed"
+						onClick={this.props.onClearCompleted}>
+						Clear completed ({completedCount})
+					</button>
+				);
+			}
 		}
 	});
 })();
